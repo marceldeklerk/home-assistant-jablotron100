@@ -611,10 +611,12 @@ class Jablotron():
 
 		for i in range(1, self._config[CONF_NUMBER_OF_DEVICES] + 1):
 			device_state = STATE_ON if states[i:(i + 1)] == "1" else STATE_OFF
-			self._update_state(
-				Jablotron._create_device_sensor_id(i),
-				device_state,
-			)
+			# Use only OFF state
+			if device_state == STATE_OFF:
+				self._update_state(
+					Jablotron._create_device_sensor_id(i),
+					device_state,
+				)
 
 	def _create_code_packet(self, code: str) -> bytes:
 		code_packet = b"\x80\x08\x03\x39\x39\x39"
