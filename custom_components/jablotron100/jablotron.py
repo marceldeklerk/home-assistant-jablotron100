@@ -461,7 +461,7 @@ class Jablotron():
 					self._state_checker_data_updating_event.clear()
 
 					packet = stream.read(PACKET_READ_SIZE)
-					# LOGGER.debug(Jablotron.format_packet_to_string(packet))
+					LOGGER.debug(Jablotron.format_packet_to_string(packet))
 
 					self._state_checker_data_updating_event.set()
 
@@ -502,6 +502,8 @@ class Jablotron():
 				try:
 					if counter == 0 and not self._is_alarm_active():
 						self._send_packet(self._create_code_packet(self._config[CONF_PASSWORD]) + b"\x52\x02\x13\x05\x9a")
+					elif counter > 0 and counter <= self._config[CONF_NUMBER_OF_DEVICES]:
+						self._send_packet(b"\x52\x02\x0a" + Jablotron._int_to_bytes(counter))
 					else:
 						self._send_packet(b"\x52\x01\x02")
 				except Exception as ex:
